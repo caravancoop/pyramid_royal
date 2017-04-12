@@ -1,17 +1,19 @@
 # build deps
 d2to1
+docutils
 
 # test deps
 coverage
+coveralls
 mock
 nose
 nosexcover
+pytest
 webtest
-coveralls
 
 pymongo < 3.0
 pyramid_mongokit >= 0.2
 voluptuous
 sqlalchemy >= 0.9
 alembic
-mysql-connector-python
+https://cdn.mysql.com/Downloads/Connector-Python/mysql-connector-python-2.0.4.zip#md5=3df394d89300db95163f17c843ef49df
