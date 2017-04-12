@@ -74,10 +74,8 @@ class Test(TestBase):
         self.assertIn('Content-Type', headers)
         self.assertIn('Location', headers)
 
-        self.assertEqual('application/json; charset=UTF-8',
-                         headers['Content-Type'])
-        self.assertEqual(location,
-                         headers['Location'])
+        self.assertEqual('application/json', headers['Content-Type'])
+        self.assertEqual(location, headers['Location'])
 
         expected = {
             'href': location,
