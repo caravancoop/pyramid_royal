@@ -1,11 +1,17 @@
 language: python
-python:
-  - "2.7"
-install: "pip install -r requirements-test.txt --allow-external mysql-connector-python && pip install -e ."
-before_script:
-  - mysql -e 'create database royal_test_example;'
-script:  "python setup.py nosetests"
+python: "3.6"
 services:
   - mongodb
+
+env:
+  matrix:
+    - TOXENV=py27-all
+  install:
+    - pip install tox
+
+before_script:
+  - mysql -e 'create database royal_test_example;'
+script:
+  - tox
 after_success:
-    - coveralls
+  - coveralls
