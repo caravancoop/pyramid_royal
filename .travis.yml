@@ -6,8 +6,9 @@ services:
 env:
   matrix:
     - TOXENV=py27-all
-  install:
-    - pip install tox
+
+install:
+  - pip install tox
 
 before_script:
   - mysql -e 'create database royal_test_example;'
