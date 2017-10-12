@@ -2,6 +2,7 @@ import os
 import logging
 import unittest
 
+import pytest
 import webtest
 
 from pyramid.config import Configurator
@@ -34,7 +35,7 @@ class TestBase(unittest.TestCase):
 
     @reify
     def config(self):
-        from royal.tests import mysql_uri
+        from royal.tests.conftest import mysql_uri
         _config = Configurator(settings={'sqlalchemy.url': mysql_uri})
         _config.include('example')
         self.addCleanup(delattr, self, 'config')
@@ -52,11 +53,10 @@ class TestBase(unittest.TestCase):
         self.addCleanup(delattr, self, 'db')
         return self._db.get_db()
 
-    @classmethod
-    def setUpClass(cls):
-        from royal.tests import engine
-        cls.engine = engine
-        cls.Session = sessionmaker()
+    @pytest.fixture(autouse=True, scope='class')
+    def _setup_class(self, db_engine):
+        self.__class__.engine = db_engine
+        self.__class__.Session = sessionmaker()
 
     def setUp(self):
         self.app  # to load all model entities
@@ -67,7 +67,7 @@ class TestBase(unittest.TestCase):
             self.setUpModels()
             self.session.commit()
         except:
-            # The tearDown is not run if the setUp crash
+            # The tearDown is not run if the setUp crashes
             self.session.rollback()
             self.session.close()
             self.connection.close()

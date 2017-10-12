@@ -13,18 +13,15 @@ log = logging.getLogger(__name__)
 
 
 mysql_uri = 'mysql+mysqlconnector://root@localhost/royal_test_example'
-engine = None
 
 
-@pytest.fixture(autouse=True, scope='session')
-def setup():
+@pytest.fixture(scope='session')
+def db_engine():
     os.environ['MONGO_URI'] = 'mongodb://localhost'
     os.environ['MONGO_DB_NAME'] = 'royal_example'
     os.environ['MONGO_DB_PREFIX'] = ''
 
     # sqla extension setup
-    global engine
-
     alembic_config = Config()
     alembic_config.set_main_option('script_location', 'example/ext/sqla/db')
     alembic_config.set_main_option('sqlalchemy.url', mysql_uri)
@@ -43,3 +40,5 @@ def setup():
         metadata.drop_all()
 
     command.upgrade(alembic_config, 'head')
+
+    return engine
