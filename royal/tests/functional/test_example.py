@@ -171,9 +171,9 @@ class Test(TestBase):
         self.assertEqual(expected, result.json)
 
     def test_delete_user(self):
-        self._add_single_user('franky', 'franky@email.com')
+        self._add_single_user(u'franky', u'franky@email.com')
         self.app.delete('/users/franky', status=204)
 
     def test_post_item_returns_405(self):
-        user = self._add_single_user('franky', 'franky@email.com')
+        self._add_single_user('franky', 'franky@email.com')
         self.app.post('/users/franky', {'key': 'value'}, status=405)
